@@ -1,13 +1,13 @@
 resource "aws_db_instance" "default" {
-  allocated_storage    = 10
+  allocated_storage    = "${var.rds_allocated_storage}"
   storage_type         = "gp2"
   engine               = "pgsql"
-  engine_version       = "10.1"
+  engine_version       = "${var.rds_engine_version}"
   instance_class       = "${var.rds_instance_class}"
   name                 = "${var.rds_name}-${var.environment}"
   username             = "${var.rds_username}"
   password             = "${var.rds_password}"
-  parameter_group_name = "default:postgres-10"
+  parameter_group_name = "${var.parameter_group_name}"
   db_subnet_group_name = "${var.db_subnet_group_name}"
 }
 
