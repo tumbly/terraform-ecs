@@ -4,11 +4,24 @@ resource "aws_db_instance" "default" {
   engine               = "pgsql"
   engine_version       = "${var.rds_engine_version}"
   instance_class       = "${var.rds_instance_class}"
+  identifier           = "${var.rds_identifier}"
   name                 = "${var.rds_name}-${var.environment}"
   username             = "${var.rds_username}"
   password             = "${var.rds_password}"
   parameter_group_name = "${var.parameter_group_name}"
   db_subnet_group_name = "${var.db_subnet_group_name}"
+}
+
+resource "aws_db_subnet_group" "default" {
+  count = "${var.create ? 1 : 0}"
+
+  name_prefix = "${aws_db_instance.default.name}"
+  description = "Database subnet group for ${aws_db_instance.default.identifier}"
+  subnet_ids  = "${var.private_subnet_cidrs}"
+
+  tags {
+    Environment = "${var.environment}"
+  }
 }
 
 resource "aws_security_group" "rds" {

@@ -3,6 +3,10 @@ variable "rds_name" {
   description = "The name of the RDS instance"
 }
 
+variable "rds_identifier" {
+  description = "The name of the RDS instance, if omitted, Terraform will assign a random, unique identifier"
+}
+
 variable "environment" {
   description = "The name of the environment"
 }
@@ -23,8 +27,8 @@ variable "parameter_group_name" {
 }
 
 variable "db_subnet_group_name" {
-  type        = "list"
-  description = "List of DB subnet group name to place the RDS instance in"
+  description = "Name of DB subnet group. DB instance will be created in the VPC associated with the DB subnet group. If unspecified, will be created in the default VPC"
+  default     = ""
 }
 
 variable "rds_username" {
@@ -47,4 +51,10 @@ variable "vpc_id" {
 variable "allow_cidr_block" {
   default     = "0.0.0.0/0"
   description = "Specify cird block that is allowd to acces the LoadBalancer"
+}
+
+variable "subnet_ids" {
+  type        = "list"
+  description = "A list of VPC subnet IDs"
+  default     = []
 }
